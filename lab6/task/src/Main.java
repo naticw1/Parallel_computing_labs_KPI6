@@ -17,19 +17,19 @@ public class Main {
         // Matrix dimension
         int n = 12;
         // Generate random matrices A and B
-        double[] A = generateRandomMatrix(n, n, 10, 30);
-        double[] B = generateRandomMatrix(n, n, 10, 30);
+        double[] A = createMatrix(n, n, 10, 30);
+        double[] B = createMatrix(n, n, 10, 30);
         double[] C = new double[n*n];  // Resultant matrix C
 
         // Synchronous matrix multiplication
         SyncMultiply(rank, size, n, A, B, C);
         if(rank == 0) {
             System.out.println("Matrix A:");
-            print(to2D(A, n, n));
+            printMatrix(transformTo2D(A, n, n));
             System.out.println("Matrix B:");
-            print(to2D(B, n, n));
+            printMatrix(transformTo2D(B, n, n));
             System.out.println("Result of multiplication (Sync):");
-            print(to2D(C, n, n));
+            printMatrix(transformTo2D(C, n, n));
         }
 
         // Asynchronous multiplication
@@ -47,7 +47,7 @@ public class Main {
         // }
 
         // Run additional experiments
-        exp(rank, size);
+        performExp(rank, size);
 
         // Finalize the MPI environment
         MPI.Finalize();
@@ -138,7 +138,7 @@ public class Main {
     }
 
     // Helper methods for printing and generating matrices
-    private static void print(double[][] m) {
+    private static void printMatrix(double[][] m) {
         for (int i = 0; i < m.length; i++) {
             for (int j = 0; j < m[i].length; j++) {
                 System.out.print(" " + m[i][j]);
@@ -147,7 +147,7 @@ public class Main {
         }
     }
 
-    public static double[][] to2D(double[] arr, int rows, int cols) {
+    public static double[][] transformTo2D(double[] arr, int rows, int cols) {
         if (arr.length != rows * cols) {
             throw new IllegalArgumentException("Invalid array size");
         }
@@ -160,7 +160,7 @@ public class Main {
         return mat;
     }
 
-    public static double[] generateRandomMatrix(int numRows, int numCols, int minValue, int maxValue) {
+    public static double[] createMatrix(int numRows, int numCols, int minValue, int maxValue) {
         double[] matrix = new double[numRows * numCols];
         Random rand = new Random();
         for (int i = 0; i < numRows; i++) {
@@ -171,7 +171,7 @@ public class Main {
         return matrix;
     }
 
-    public static void exp(int rank, int size) {
+    public static void performExp(int rank, int size) {
         if (rank == 0)
             System.out.println("Results for " + size + " processors");
         int experC = 2;
@@ -182,8 +182,8 @@ public class Main {
         ns.add(1750);
 
         for (int n : ns) {
-            double[] A = generateRandomMatrix(n, n, 10, 30);
-            double[] B = generateRandomMatrix(n, n, 10, 30);
+            double[] A = createMatrix(n, n, 10, 30);
+            double[] B = createMatrix(n, n, 10, 30);
             double[] C = new double[n * n];
 
             Stopwatch s = Stopwatch.createStarted();
