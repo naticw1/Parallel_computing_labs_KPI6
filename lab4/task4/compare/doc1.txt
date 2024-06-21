@@ -1,0 +1,1 @@
+Java is a high-level programming language. In this document, we explore various aspects of network security, cloud computing, and database management.
